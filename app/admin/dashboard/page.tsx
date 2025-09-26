@@ -814,45 +814,109 @@ export default function DashboardPage() {
 
               {/* ホームページ編集フォーム */}
               {editingPage === 'home' && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">ヒーロータイトル</label>
-                    <input
-                      type="text"
-                      value={editData.hero?.title || ''}
-                      onChange={(e) => setEditData({
-                        ...editData,
-                        hero: { ...editData.hero, title: e.target.value }
-                      })}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
+                <div className="space-y-6">
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-blue-800 mb-3">基本ヒーロー設定</h4>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">ヒーロータイトル</label>
+                        <input
+                          type="text"
+                          value={editData.hero?.title || ''}
+                          onChange={(e) => setEditData({
+                            ...editData,
+                            hero: { ...editData.hero, title: e.target.value }
+                          })}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">ヒーローサブタイトル</label>
+                        <textarea
+                          value={editData.hero?.subtitle || ''}
+                          onChange={(e) => setEditData({
+                            ...editData,
+                            hero: { ...editData.hero, subtitle: e.target.value }
+                          })}
+                          rows={2}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">CTAボタンテキスト</label>
+                        <input
+                          type="text"
+                          value={editData.hero?.ctaText || ''}
+                          onChange={(e) => setEditData({
+                            ...editData,
+                            hero: { ...editData.hero, ctaText: e.target.value }
+                          })}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">ヒーローサブタイトル</label>
-                    <textarea
-                      value={editData.hero?.subtitle || ''}
-                      onChange={(e) => setEditData({
-                        ...editData,
-                        hero: { ...editData.hero, subtitle: e.target.value }
-                      })}
-                      rows={2}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
+
+                  <div className="bg-orange-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-orange-800 mb-3">高級ヒーロー設定（HeroLuxury用）</h4>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">メインタイトル（大きく表示）</label>
+                        <input
+                          type="text"
+                          value={editData.hero?.luxuryTitle || ''}
+                          onChange={(e) => setEditData({
+                            ...editData,
+                            hero: { ...editData.hero, luxuryTitle: e.target.value }
+                          })}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                          placeholder="梵天庵"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">サブタイトル</label>
+                        <input
+                          type="text"
+                          value={editData.hero?.luxurySubtitle || ''}
+                          onChange={(e) => setEditData({
+                            ...editData,
+                            hero: { ...editData.hero, luxurySubtitle: e.target.value }
+                          })}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                          placeholder="古き良き日本の心を、今に伝える"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">メッセージ1</label>
+                        <input
+                          type="text"
+                          value={editData.hero?.luxuryMessage1 || ''}
+                          onChange={(e) => setEditData({
+                            ...editData,
+                            hero: { ...editData.hero, luxuryMessage1: e.target.value }
+                          })}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                          placeholder="季節の移ろいを映す、繊細な和菓子"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">メッセージ2</label>
+                        <input
+                          type="text"
+                          value={editData.hero?.luxuryMessage2 || ''}
+                          onChange={(e) => setEditData({
+                            ...editData,
+                            hero: { ...editData.hero, luxuryMessage2: e.target.value }
+                          })}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                          placeholder="職人の技と心が織りなす、一期一会のおもてなし"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">CTAボタンテキスト</label>
-                    <input
-                      type="text"
-                      value={editData.hero?.ctaText || ''}
-                      onChange={(e) => setEditData({
-                        ...editData,
-                        hero: { ...editData.hero, ctaText: e.target.value }
-                      })}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
+
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600">商品・ニュース編集は個別管理画面で対応予定</p>
+                    <p className="text-sm text-gray-600">商品・ニュース編集は個別管理画面で対応中</p>
                   </div>
                 </div>
               )}

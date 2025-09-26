@@ -9,6 +9,11 @@ export interface HeroContent {
   subtitle: string;
   ctaText: string;
   backgroundImage?: string;
+  // HeroLuxury用の拡張フィールド
+  luxuryTitle?: string;
+  luxurySubtitle?: string;
+  luxuryMessage1?: string;
+  luxuryMessage2?: string;
 }
 
 export interface ProductContent {
@@ -103,7 +108,12 @@ export const defaultContent: SiteContent = {
   hero: {
     title: "茶寮 梵天庵",
     subtitle: "伝統の逸品\n心を込めた一期一会",
-    ctaText: ""  // CTAボタンを非表示に
+    ctaText: "",  // CTAボタンを非表示に
+    // HeroLuxury用のテキスト
+    luxuryTitle: "梵天庵",
+    luxurySubtitle: "古き良き日本の心を、今に伝える",
+    luxuryMessage1: "季節の移ろいを映す、繊細な和菓子",
+    luxuryMessage2: "職人の技と心が織りなす、一期一会のおもてなし"
   },
   products: [
     {
