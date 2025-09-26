@@ -1,15 +1,20 @@
-// 同期API - Vercel KV または GitHub Gist ベース
+// 同期API - AWS DynamoDB ベース
 import { NextRequest, NextResponse } from 'next/server'
 import { SiteContent } from '@/lib/content-manager-enhanced'
+import { DynamoDBClient, GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb'
+import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 
-// 簡易ファイルベースストレージ（本番ではVercel KVやRedisを推奨）
-const STORAGE_FILE = '/tmp/cms-data.json'
+// AWS DynamoDB クライアント
+const dynamoClient = new DynamoDBClient({
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ''
+  }
+})
 
-// メモリベース一時ストレージ（デモ用）
-let memoryStorage: { content: SiteContent | null, lastUpdated: string | null } = {
-  content: null,
-  lastUpdated: null
-}
+const TABLE_NAME = 'cms-content-storage'
+const SITE_ID = 'bonten-an'
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url)
@@ -19,19 +24,38 @@ export async function GET(request: NextRequest) {
 
   try {
     if (action === 'status') {
+      // DynamoDBからデータ取得して状態確認
+      const getCommand = new GetItemCommand({
+        TableName: TABLE_NAME,
+        Key: marshall({ siteId: SITE_ID })
+      })
+
+      const response = await dynamoClient.send(getCommand)
+      const hasContent = !!response.Item
+      const lastUpdated = hasContent ? unmarshall(response.Item!).lastUpdated : null
+
       const status = {
-        lastUpdated: memoryStorage.lastUpdated,
-        needsSync: memoryStorage.content !== null,
-        hasContent: memoryStorage.content !== null
+        lastUpdated,
+        needsSync: hasContent,
+        hasContent
       };
       console.log('📋 Sync API Status:', status);
       return NextResponse.json(status)
     }
 
     if (action === 'get') {
+      // DynamoDBからコンテンツ取得
+      const getCommand = new GetItemCommand({
+        TableName: TABLE_NAME,
+        Key: marshall({ siteId: SITE_ID })
+      })
+
+      const response = await dynamoClient.send(getCommand)
+      const data = response.Item ? unmarshall(response.Item) : null
+
       const result = {
-        content: memoryStorage.content,
-        lastUpdated: memoryStorage.lastUpdated
+        content: data?.content || null,
+        lastUpdated: data?.lastUpdated || null
       };
       console.log('📎 Sync API GET - returning content:', {
         hasContent: result.content !== null,
@@ -63,18 +87,27 @@ export async function POST(request: NextRequest) {
       productTitles: content.products?.map(p => p.title) || []
     });
 
-    // メモリに保存
-    memoryStorage.content = content
-    memoryStorage.lastUpdated = new Date().toISOString()
+    // DynamoDBに保存
+    const lastUpdated = new Date().toISOString()
+    const putCommand = new PutItemCommand({
+      TableName: TABLE_NAME,
+      Item: marshall({
+        siteId: SITE_ID,
+        content: content,
+        lastUpdated: lastUpdated
+      })
+    })
 
-    console.log('✅ Content synced to cloud:', {
+    await dynamoClient.send(putCommand)
+
+    console.log('✅ Content synced to DynamoDB:', {
       products: content.products?.length || 0,
-      lastUpdated: memoryStorage.lastUpdated
+      lastUpdated: lastUpdated
     })
 
     return NextResponse.json({
       success: true,
-      lastUpdated: memoryStorage.lastUpdated,
+      lastUpdated: lastUpdated,
       productCount: content.products?.length || 0
     })
   } catch (error) {

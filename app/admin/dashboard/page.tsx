@@ -367,7 +367,7 @@ export default function DashboardPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-2">商品・サービス</h3>
             <p className="text-3xl font-bold text-green-600">
-              {content ? content.products.length : 0}
+              {content?.products?.length || 0}
             </p>
             <p className="text-sm text-gray-600">アイテム</p>
           </div>
@@ -375,7 +375,7 @@ export default function DashboardPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-2">お知らせ</h3>
             <p className="text-3xl font-bold text-purple-600">
-              {content ? content.news.length : 0}
+              {content?.news?.length || 0}
             </p>
             <p className="text-sm text-gray-600">投稿</p>
           </div>
