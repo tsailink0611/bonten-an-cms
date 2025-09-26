@@ -91,6 +91,12 @@ export default function DashboardPage() {
   const handleEditPage = (pageType: string) => {
     if (!content) return
 
+    // ニュース管理は専用ページへリダイレクト
+    if (pageType === 'news') {
+      router.push('/admin/news')
+      return
+    }
+
     console.log('編集開始:', pageType)
     setEditingPage(pageType)
 
@@ -443,6 +449,19 @@ export default function DashboardPage() {
                 className="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors text-sm"
               >
                 編集する
+              </button>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-l-4 border-pink-500">
+              <h3 className="text-lg font-medium text-gray-900 mb-3">
+                ✨ お知らせ・ブログ
+              </h3>
+              <p className="text-gray-600 mb-4 text-sm">記事の作成・編集・管理</p>
+              <button
+                onClick={() => handleEditPage('news')}
+                className="w-full bg-pink-600 text-white py-2 px-4 rounded-lg hover:bg-pink-700 transition-colors text-sm font-medium"
+              >
+                記事を管理する
               </button>
             </div>
           </div>

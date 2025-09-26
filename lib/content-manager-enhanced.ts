@@ -30,6 +30,13 @@ export interface NewsContent {
   title: string;
   date: string;
   summary: string;
+  content?: string;
+  category?: string;
+  tags?: string[];
+  published?: boolean;
+  slug?: string;
+  author?: string;
+  featuredImage?: string;
 }
 
 export interface TraditionContent {
